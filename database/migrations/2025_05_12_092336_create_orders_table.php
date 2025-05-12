@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plants', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->decimal('price', 8, 2);
-            $table->text('description');
-            $table->integer('stock')->default(0);
-            $table->string('image_url')->nullable();
-            $table->foreignId('plant_family_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->datetime('order_date');
+            $table->string('status')->default('pending'); // pending, completed, cancelled
+            $table->decimal('total_price', 8, 2);
         });
-     
     }
 
     /**
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plants');
+        Schema::dropIfExists('orders');
     }
 };

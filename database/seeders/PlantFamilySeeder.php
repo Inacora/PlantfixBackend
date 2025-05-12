@@ -9,23 +9,14 @@ class PlantFamilySeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
-    public function run()
+    public function run(): void
     {
-        $plantFamilies = [
-            'Alocasia',
-            'Philodendron',
-            'Monstera',
-            'Anthurium',
-            'Hoya',
-            'Syngonium',
-        ];
-
-        foreach ($plantFamilies as $family) {
+        // Create 10 plant families with random data
+        for ($i = 0; $i < 10; $i++) {
             DB::table('plant_families')->insert([
-                'name' => $family,
+                'name' => 'Family ' . ($i + 1),
+                'description' => 'Description for Family ' . ($i + 1),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

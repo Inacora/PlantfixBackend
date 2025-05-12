@@ -8,9 +8,10 @@ class Plant extends Model
 {
     protected $fillable = [
         'name',
-        'description',
         'price',
-        'image',
+        'description',
+        'stock',
+        'image_url',
         'plant_family_id',
     ];
      
@@ -19,4 +20,7 @@ class Plant extends Model
         return $this->belongsTo(PlantFamily::class, 'plant_family_id');
     }
     
+    public function orders() {
+        return $this->belongsToMany(Order::class)->withPivot('quantity', 'price_at_time');
+    }
 }
