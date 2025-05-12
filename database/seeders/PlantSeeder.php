@@ -71,6 +71,30 @@ class PlantSeeder extends Seeder
                 'image_url' => null,
                 'plant_family_id' => 7,
             ],
+            [
+                'name' => 'ZZ Plant',
+                'price' => 22.00,
+                'description' => 'A low-maintenance plant with glossy leaves.',
+                'stock' => 8,
+                'image_url' => null,
+                'plant_family_id' => 8,
+            ],
+            [
+                'name' => 'Rubber Plant',
+                'price' => 28.00,
+                'description' => 'A popular houseplant with large, dark green leaves.',
+                'stock' => 10,
+                'image_url' => null,
+                'plant_family_id' => 9,
+            ],
+            [
+                'name' => 'Dracaena',
+                'price' => 35.00,
+                'description' => 'A diverse group of plants with striking foliage.',
+                'stock' => 7,
+                'image_url' => null,
+                'plant_family_id' => 10,
+            ],
         ];
 
         foreach ($plants as $plant) {
