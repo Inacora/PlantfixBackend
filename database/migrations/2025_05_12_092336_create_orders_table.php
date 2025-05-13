@@ -16,8 +16,10 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->datetime('order_date');
-            $table->string('status')->default('pending'); // pending, completed, cancelled
+            $table->string('status')->default('pending'); 
             $table->decimal('total_price', 8, 2);
+            $table->string('address');
+            $table->string('payment_method')->default('credit_card'); 
         });
     }
 

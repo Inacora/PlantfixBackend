@@ -9,4 +9,8 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::resource('plants', PlantController::class);
+Route::apiResource('plants', PlantController::class);
+
+
+
+

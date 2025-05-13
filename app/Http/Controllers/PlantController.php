@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Plant;
 use App\Models\PlantFamily;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePlantRequest;
 
 class PlantController extends Controller
 {
@@ -18,27 +19,13 @@ class PlantController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-            
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePlantRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'required|numeric',
-            'image' => 'required|url',
-            'plant_family_id' => 'required|exists:plant_families,id',
-        ]);
+        $validated = $request->validated();
 
-        $plant = Plant::create($request->all());
+        $plant = Plant::create($validated);
 
         return response()->json($plant, 201);
     }

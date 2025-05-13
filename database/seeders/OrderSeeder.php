@@ -19,6 +19,8 @@ class OrderSeeder extends Seeder
                 'status' => 'completed',
                 'order_date' => now()->subDays(rand(1, 30)), // Random order date within the last 30 days
                 'total_price' => rand(100, 1000),
+                'address' => '123 Plant St, Plant City, PL 12345',
+                'payment_method' => 'credit_card',
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
