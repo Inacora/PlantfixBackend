@@ -11,7 +11,7 @@ class StorePlantRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,10 +26,9 @@ class StorePlantRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
             'stock' => 'required|integer|min:0',
-            'image_url' => 'nullable|string|max:255',
-            'plant_family_id' => 'required|exists:plant_families,id',
-        ];
-    }
+            'image_url' => 'nullable|string|max:2048',
+            'plant_family_id' => 'required|exists:plant_families,id',  ];
+        }
 
     public function messages()
     {
@@ -46,18 +45,10 @@ class StorePlantRequest extends FormRequest
             'price.min' => 'The price must be at least 0.',
             'stock.integer' => 'The stock must be an integer.',
             'stock.min' => 'The stock must be at least 0.',
+            'name.string' => 'The name must be a string.',
+            'name.max' => 'The name may not be greater than 255 characters.',
         ];
     }
 
-    public function attributes()
-    {
-        return [
-            'name' => 'plant name',
-            'price' => 'plant price',
-            'description' => 'plant description',
-            'stock' => 'plant stock',
-            'image_url' => 'plant image',
-            'plant_family_id' => 'plant family ID',
-        ];
-    }
+   
 }
