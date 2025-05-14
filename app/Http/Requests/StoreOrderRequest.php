@@ -11,7 +11,7 @@ class StoreOrderRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -32,5 +32,11 @@ class StoreOrderRequest extends FormRequest
             'order_date' => 'required|date',
             'user_id' => 'required|exists:users,id',
         ];
+        
     }
+ 
+    public function messages(){
+            
+    }
+
 }

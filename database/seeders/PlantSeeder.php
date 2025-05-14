@@ -75,7 +75,7 @@ class PlantSeeder extends Seeder
                 'name' => 'Bird of Paradise',
                 'price' => 50.00,
                 'description' => 'A tropical plant with large leaves and striking flowers.',
-                'stock' => 8,
+                'stock' => 4,
                 'image_url' => 'https://www.thesill.com/cdn/shop/files/the-sill_Large-Bird-of-Paradise_Large_Agnes-White_Variant_b36f6505-d22e-4981-8493-134800fbeba4.jpg?v=1743441684&width=990',
                 'plant_family_id' => 4,
             ],

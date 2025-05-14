@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreOrderRequest;
 
 class OrderController extends Controller
 {
@@ -20,7 +21,7 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -28,7 +29,21 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'plants' => 'required|array',
+            'plants.*.id' => 'required|exists:plants,id',
+            'plants.*.quantity' => 'required|integer|min:1',
+            'address' => 'required|string|max:255',
+            'payment_method' => 'required|string|in:credit_card,paypal,cash',
+            'total_price' => 'required|numeric|min:0',
+            'status' => 'required|string|in:pending,completed,cancelled',
+            'order_date' => 'required|date',
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        $order = Order::create($validated);
+
+        return response()->json($order, 201);
     }
 
     /**
