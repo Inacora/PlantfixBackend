@@ -12,6 +12,6 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('plants', PlantController::class);
 
 
-// T Dev CLASS
+// gT Dev CLASS
 
 
