@@ -40,19 +40,15 @@ class PlantController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Plant $plant)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Plant $plant)
+    public function update(StorePlantRequest $request, Plant $plant)
     {
-        //
+        $validated = $request->validated();
+
+        $plant->update($validated);
+
+        return response()->json($plant);
     }
 
     /**
@@ -60,6 +56,8 @@ class PlantController extends Controller
      */
     public function destroy(Plant $plant)
     {
-        //
+        $plant->delete();
+
+        return response()->json(null, 204);
     }
 }
