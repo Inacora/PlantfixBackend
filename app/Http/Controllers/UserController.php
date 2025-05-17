@@ -2,24 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
+
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function create(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
+        $validated = $request->validated();
 
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-        ]);
+        $user = User::create($validated);
 
-        return response()->json(['user' => $user], 201);
+        return response()->json($user, 201);
     }
 }
