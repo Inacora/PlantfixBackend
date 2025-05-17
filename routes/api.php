@@ -12,7 +12,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('plants', PlantController::class);
-    Route::apiResource('users', UserController::class);
+   
 });
 
-Route::post('users/create', [UserController::class, 'store']);
+  Route::apiResource('users', UserController::class);
+// Route::post('users/id', [UserController::class, 'store']);
