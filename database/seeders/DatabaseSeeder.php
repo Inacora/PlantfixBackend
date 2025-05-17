@@ -18,8 +18,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PlantFamilySeeder::class,
             PlantSeeder::class,
-            OrderPlantSeeder::class,
-            OrderSeeder::class,
+            // OrderPlantSeeder::class,
+            // OrderSeeder::class,
         ]);
     }
 }

@@ -11,6 +11,6 @@ Route::get('/user', function (Request $request) {
 
 Route::apiResource('plants', PlantController::class);
 
-
+Route::apiResource('orders', OrderController::class);
 
 
