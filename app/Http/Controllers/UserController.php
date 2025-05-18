@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
- public function index()
+    public function index()
     {
         $users = User::all();
         return response()->json($users);
@@ -18,6 +18,8 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $validated = $request->validated();
+
+        $validated['role'] = 'user';
 
         $user = User::create($validated);
 
