@@ -6,19 +6,17 @@ use App\Http\Controllers\PlantController;
 use App\Http\Controllers\UserController;
 
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
+});
 
-
-Route::apiResource('plants', PlantController::class);
-
-Route::apiResource('orders', OrderController::class);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('plants', PlantController::class);
-   
+    Route::apiResource('orders', OrderController::class);
 });
 
-  Route::apiResource('users', UserController::class);
+
+
+  
 
