@@ -11,7 +11,10 @@ class Order extends Model
         'order_date',
         'status',
         'total_price',
-        'shipping_address',
+        'address',
+        'city',
+        'country',
+        'phone_number',
     ];
 
     public function user() {

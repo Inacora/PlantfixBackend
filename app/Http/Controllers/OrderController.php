@@ -3,28 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Illuminate\Http\Request;
+use App\Models\OrderPlant;
 use App\Http\Requests\StoreOrderRequest;
 
 class OrderController extends Controller
-{public function store(Request $request)
 {
-    $order = Order::create([
-        'user_id' => $request->user_id, // o auth()->id()
-        'order_date' => now(),
-        'status' => 'pending',
-        'total_price' => $request->total_price,
-    ]);
+    public function store(StoreOrderRequest $request)
+    {
+        $data = $request->validated();
 
-    foreach ($request->items as $item) {
-        OrderPlant::create([
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'order_date' => now(),
+            'status' => 'pending',
+            'total_price' => $data['total_price'],
+            'address' => $data['address'],
+            'city' => $data['city'],
+            'country' => $data['country'],
+            'phone_number' => $data['phone_number'],
+        ]);
+
+        foreach ($data['plants'] as $plant) {
+            OrderPlant::create([
+                'order_id' => $order->id,
+                'plant_id' => $plant['id'],
+                'quantity' => $plant['quantity'],
+                'price' => $plant['price'], 
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Order placed successfully.',
             'order_id' => $order->id,
-            'plant_id' => $item['id'],
-            'quantity' => $item['quantity'],
-            'price_at_time' => $item['price'],
         ]);
     }
-
-    return response()->json(['message' => 'Pedido realizado', 'order_id' => $order->id]);
-}
 }

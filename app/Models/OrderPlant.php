@@ -10,7 +10,7 @@ class OrderPlant extends Model
         'order_id',
         'plant_id',
         'quantity',
-        'price_at_time',
+        'price',
     ];
 
     public function order()

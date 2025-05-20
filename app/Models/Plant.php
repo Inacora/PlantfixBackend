@@ -21,6 +21,6 @@ class Plant extends Model
     }
     
     public function orders() {
-        return $this->belongsToMany(Order::class)->withPivot('quantity', 'price_at_time');
+        return $this->belongsToMany(Order::class)->withPivot('quantity', 'price');
     }
 }

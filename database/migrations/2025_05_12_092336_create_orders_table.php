@@ -18,7 +18,10 @@ return new class extends Migration
             $table->datetime('order_date');
             $table->string('status')->default('pending'); 
             $table->decimal('total_price', 8, 2);
-            $table->string('shipping_address');
+            $table->string('address');
+            $table->string('city');
+            $table->string('country');
+            $table->string('phone_number');
         });
     }
 
