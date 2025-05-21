@@ -8,6 +8,16 @@ use App\Http\Requests\StoreOrderRequest;
 
 class OrderController extends Controller
 {
+  public function index()
+    {
+        $orders = Order::with(['plants', 'user'])->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => $orders
+        ]);
+    }
+
     public function store(StoreOrderRequest $request)
     {
         $data = $request->validated();
