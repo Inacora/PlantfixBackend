@@ -4,24 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderPlant;
+use App\Models\Plant;
 use App\Http\Requests\StoreOrderRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
   public function index()
-    {
-        $orders = Order::with(['plants', 'user'])->get();
+{
+    return Order::with(['plants'])->get(); 
+    return response()->json($orders);
+}
 
-        return response()->json([
-            'success' => true,
-            'data' => $orders
-        ]);
-    }
+public function store(StoreOrderRequest $request)
+{
+    $data = $request->validated();
 
-    public function store(StoreOrderRequest $request)
-    {
-        $data = $request->validated();
+    DB::beginTransaction();
 
+    try {
         $order = Order::create([
             'user_id' => auth()->id(),
             'order_date' => now(),
@@ -33,18 +35,70 @@ class OrderController extends Controller
             'phone_number' => $data['phone_number'],
         ]);
 
-        foreach ($data['plants'] as $plant) {
+        foreach ($data['plants'] as $plantData) {
+            $plant = Plant::findOrFail($plantData['id']);
+
+            // Validar stock suficiente
+            if ($plant->stock < $plantData['quantity']) {
+                throw new \Exception("No hay stock suficiente para la planta: {$plant->name}");
+            }
+
+            // Crear el registro en order_plants
             OrderPlant::create([
                 'order_id' => $order->id,
-                'plant_id' => $plant['id'],
-                'quantity' => $plant['quantity'],
-                'price' => $plant['price'], 
+                'plant_id' => $plant->id,
+                'quantity' => $plantData['quantity'],
+                'price' => $plantData['price'], 
             ]);
+
+            // Reducir el stock
+            $plant->stock -= $plantData['quantity'];
+            $plant->save();
         }
+
+        DB::commit();
 
         return response()->json([
             'message' => 'Order placed successfully.',
             'order_id' => $order->id,
-        ]);
+        ], 201);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'error' => $e->getMessage(),
+        ], 400);
     }
+}
+
+public function show($id)
+{
+    return Order::with('plants')->findOrFail($id);
+}
+
+public function updateStatus(Request $request, $id)
+{
+    $request->validate([
+        'status' => 'required|string|in:pending,processing,shipped,delivered,cancelled',
+    ]);
+
+    $order = Order::findOrFail($id);
+    $order->status = $request->input('status');
+    $order->save();
+
+    return response()->json([
+        'message' => 'Order status updated successfully.',
+        'order' => $order,
+    ]);
+}
+
+public function destroy($id)
+{
+    $order = Order::findOrFail($id);
+    $order->delete();
+
+    return response()->json(['message' => 'Order deleted successfully']);
+}
+
+
 }

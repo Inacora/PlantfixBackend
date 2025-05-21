@@ -15,7 +15,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('plants', PlantController::class);
+
     Route::apiResource('orders', OrderController::class);
+    Route::patch('orders/{id}/status', [OrderController::class, 'updateStatus']);
+
+    Route::apiResource('users', UserController::class);
 });
 
 
