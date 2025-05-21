@@ -22,6 +22,7 @@ class StoreUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,user',
         ];
     }
 
@@ -43,6 +44,8 @@ class StoreUserRequest extends FormRequest
             'password.min' => 'The password must be at least 8 characters.',
             'password.confirmed' => 'The passwords do not match',
 
+              'role.required' => 'The role is required.',
+            'role.in' => 'The role must be either admin or user.',
       ];
     }
 }

@@ -50,7 +50,6 @@ class StoreOrderRequest extends FormRequest
         'plants.*.price.numeric' => 'Price must be a valid number.',
         'plants.*.price.min' => 'Price must be at least 0.',
 
-
         'total_price.required' => 'Total price is required.',
         'total_price.numeric' => 'Total price must be a number.',
         'total_price.min' => 'Total price must be at least 0.',
