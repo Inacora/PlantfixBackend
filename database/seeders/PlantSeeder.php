@@ -34,7 +34,7 @@ class PlantSeeder extends Seeder
             [
                 'name' => 'Fiddle Leaf Fig',
                 'price' => 40.00,
-                'description' => 'A trendy plant with large, glossy leaves.',
+                'description' => 'A trendy plant with large, glossy, and vibrant leaves.',
                 'stock' => 5,
                 'image_url' => 'https://www.thesill.com/cdn/shop/files/the-sill_Large-Faux-Fiddle_Large_Pallas_Cream_Variant_048fd8ae-a257-414f-bd7a-beb40e6a58dc.jpg?v=1730992807&width=990',
                 'plant_family_id' => 2,
@@ -42,7 +42,7 @@ class PlantSeeder extends Seeder
             [
                 'name' => 'Snake Plant',
                 'price' => 20.00,
-                'description' => 'A hardy plant that thrives on neglect.',
+                'description' => 'A hardy, low-maintenance plant known for thriving on neglect and its tall, striking leaves.',
                 'stock' => 20,
                 'image_url' => 'https://www.thesill.com/cdn/shop/files/the-sil_Medium-Sansevieria-Silver-Flame_Medium_Growpot_Variant.jpg?v=1741284438&width=990',
                 'plant_family_id' => 3,
