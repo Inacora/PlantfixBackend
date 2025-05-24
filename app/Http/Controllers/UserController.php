@@ -6,47 +6,32 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-     public function index()
-    {
-        $users = User::all();
-        return response()->json($users);
-    }
-
-    public function store(StoreUserRequest $request)
-{
-    $validated = $request->validated();
-
-    $user = User::create([
-        'name' => $validated['name'],
-        'email' => $validated['email'],
-        'password' => Hash::make($validated['password']),
-    ]);
-
-    return response()->json([
-        'message' => 'User created successfully.',
-        'user' => $user,
-    ], 201);
-}
-
-public function show($id)
-{
-    $user = User::findOrFail($id);
-
-    return response()->json($user);
-}
-
 public function update(UpdateUserRequest $request, $id)
 {
     $user = User::findOrFail($id);
 
-    $validated = $request->validated();
+    if (Auth::id() !== $user->id) {
+        return response()->json(['error' => 'No autorizado.'], 403);
+    }
 
-    $user->name = $validated['name'];
-    $user->email = $validated['email'];
+    // Filtrar sólo los campos con valor no nulo ni vacío
+    $filtered = array_filter($request->all(), function ($value) {
+        return !is_null($value) && $value !== '';
+    });
 
+    $validated = $request->validate($request->rules(), [], $request->messages(), $filtered);
+
+    if (isset($validated['name'])) {
+        $user->name = $validated['name'];
+    }
+    if (isset($validated['email'])) {
+        $user->email = $validated['email'];
+    }
     if (!empty($validated['password'])) {
         $user->password = Hash::make($validated['password']);
     }
@@ -57,15 +42,21 @@ public function update(UpdateUserRequest $request, $id)
         'message' => 'User updated successfully.',
         'user' => $user,
     ]);
-    }
+}
 
     public function destroy($id)
-{
-    $user = User::findOrFail($id);
-    $user->delete();
+    {
+        $user = User::findOrFail($id);
 
-    return response()->json([
-        'message' => 'User deleted successfully.',
-    ]);
-}
+        // Validar que el usuario autenticado sea el mismo que quiere eliminar
+        if (Auth::id() !== $user->id) {
+            return response()->json(['error' => 'No autorizado.'], 403);
+        }
+
+        $user->delete();
+
+        return response()->json([
+            'message' => 'User deleted successfully.',
+        ]);
+    }
 }
