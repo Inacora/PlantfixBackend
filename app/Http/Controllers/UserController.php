@@ -18,7 +18,7 @@ class UserController extends Controller
             return response()->json(['error' => 'No autorizado.'], 403);
         }
 
-        $users = User::all();
+        $users = User::paginate(6);
         return response()->json($users);
     }
 
@@ -70,4 +70,16 @@ public function update(UpdateUserRequest $request, $id)
             'message' => 'User deleted successfully.',
         ]);
     }
+
+     public function search(Request $request)
+{
+
+    $query = $request->input('q');
+
+
+
+    $users = User::where('name', 'like', "%{$query}%")->paginate(6);
+
+    return response()->json($users);
+}
 }

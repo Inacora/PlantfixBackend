@@ -14,7 +14,7 @@ class PlantController extends Controller
      */
     public function index()
     {
-        $plants = Plant::with('plantFamily')->get();
+        $plants = Plant::with('plantFamily')->paginate(6);
         return response()->json($plants);
     }
 
@@ -60,4 +60,16 @@ class PlantController extends Controller
 
         return response()->json(null, 204);
     }
+
+    public function search(Request $request)
+{
+
+    $query = $request->input('q');
+
+
+
+    $plants = Plant::where('name', 'like', "%{$query}%")->paginate(6);
+
+    return response()->json($plants);
+}
 }

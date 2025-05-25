@@ -13,7 +13,7 @@ class OrderController extends Controller
 {
   public function index()
 {
-    return Order::with(['plants'])->get(); 
+    return Order::with(['plants'])->paginate(6);
     return response()->json($orders);
 }
 
@@ -48,7 +48,7 @@ public function store(StoreOrderRequest $request)
                 'order_id' => $order->id,
                 'plant_id' => $plant->id,
                 'quantity' => $plantData['quantity'],
-                'price' => $plantData['price'], 
+                'price' => $plantData['price'],
             ]);
 
             // Reducir el stock
@@ -99,6 +99,28 @@ public function destroy($id)
 
     return response()->json(['message' => 'Order deleted successfully']);
 }
+
+
+
+ public function getUserByOrder($id)
+{
+    $order = Order::with('user')->findOrFail($id);
+
+    return response()->json($order->user);
+}
+
+    public function search(Request $request)
+{
+
+    $query = $request->input('q');
+
+
+
+    $orders = Order::where('status', 'like', "%{$query}%")->paginate(6);
+
+    return response()->json($orders);
+}
+
 
 
 }
