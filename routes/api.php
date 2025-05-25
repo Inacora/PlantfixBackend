@@ -29,13 +29,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('users', [UserController::class, 'store']);
         Route::get('users/{user}', [UserController::class, 'show']);
         
-    Route::get('orders', [OrderController::class, 'index']);
-
+        Route::get('orders', [OrderController::class, 'index']);
         Route::get('orders/{order}', [OrderController::class, 'show']);
         Route::put('orders/{order}', [OrderController::class, 'update']);
         Route::patch('orders/{order}', [OrderController::class, 'update']);
         Route::delete('orders/{order}', [OrderController::class, 'destroy']);
         Route::patch('orders/{id}/status', [OrderController::class, 'updateStatus']);
+        
         Route::post('plants', [PlantController::class, 'store']);
         Route::get('plants/{plant}', [PlantController::class, 'show']);
         Route::put('plants/{plant}', [PlantController::class, 'update']);

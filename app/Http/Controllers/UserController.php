@@ -11,6 +11,17 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+ public function index()
+    {
+        // Solo los administradores pueden ver la lista de usuarios
+        if (Auth::user()->role !== 'admin') {
+            return response()->json(['error' => 'No autorizado.'], 403);
+        }
+
+        $users = User::all();
+        return response()->json($users);
+    }
+
 public function update(UpdateUserRequest $request, $id)
 {
     $user = User::findOrFail($id);
