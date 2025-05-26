@@ -14,7 +14,7 @@ class PlantController extends Controller
      */
     public function index()
     {
-        $plants = Plant::with('plantFamily')->paginate(6);
+        $plants = Plant::with('plantFamily')->paginate(8);
         return response()->json($plants);
     }
 
@@ -68,7 +68,7 @@ class PlantController extends Controller
 
 
 
-    $plants = Plant::where('name', 'like', "%{$query}%")->paginate(6);
+    $plants = Plant::where('name', 'like', "%{$query}%")->paginate(8);
 
     return response()->json($plants);
 }

@@ -13,7 +13,7 @@ class OrderController extends Controller
 {
   public function index()
 {
-    return Order::with(['plants'])->paginate(6);
+    return Order::with(['plants'])->paginate(8);
     return response()->json($orders);
 }
 
@@ -116,7 +116,7 @@ public function destroy($id)
 
 
 
-    $orders = Order::where('status', 'like', "%{$query}%")->paginate(6);
+    $orders = Order::where('status', 'like', "%{$query}%")->paginate(8);
 
     return response()->json($orders);
 }

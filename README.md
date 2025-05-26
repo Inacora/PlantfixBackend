@@ -1,66 +1,143 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Tienda online PlantFix - Backend (API RESTful)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este repositorio contiene el backend de PlantFix, una tienda online de plantas. Se trata de una API RESTful desarrollada con Laravel, que permite gestionar productos, pedidos y usuarios mediante peticiones HTTP y respuestas en formato JSON. Utiliza Laravel Sanctum para la autenticación basada en tokens y Laravel Breeze como sistema de autenticación ligera y sencilla.
 
-## About Laravel
+## Tabla de contenidos
+* [Requisitos](#requisitos)
+* [Instalación](#instalación)
+* [Configuración del entorno](#configuración-del-entorno)
+* [API RESTful](#api-restful)
+* [Seeders](#seeders)
+* [Colaboradores](#colaboradores-del-proyecto)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Primeros pasos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+#### Requisitos:
+* <a href="https://www.php.net/downloads.php">PHP</a>
+* <a href="https://getcomposer.org/doc/00-intro.md#using-the-installer">Composer</a>
+* <a href="https://docs.npmjs.com/downloading-and-installing-node-js-and-npm">NPM</a>
+* Un sistema de base de datos (SQLite recomendado para desarrollo)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### Instalación:
+Una vez que tengamos el proyecto clonado abriremos una consola en la carpeta "PlantfixBackend" y ejecutaremos los siguientes comandos:
 
-## Learning Laravel
+```
+composer install
+```
+ Necesario para instalar todas las dependencias requeridas por el proyecto.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+ ```
+ cp .env.example .env
+ ```
+Este es el archivo de variables de entorno, en el podremos configurar datos importantes de la aplicación, como la base de datos que utilizara, por defecto SQLite.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```
+php artisan key:generate
+```
+ Genera una clave de aplicación única. Laravel utiliza la clave de aplicación (APP_KEY en el archivo .env) para cifrar y descifrar datos sensibles, como sesiones de usuario, tokens y otros elementos que requieren seguridad.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+php artisan migrate
+```
+Este comando genera las tablas necesarias para almacenar las sesiones en la base de datos. Si utilizamos SQLite y es la primera vez que lo hacemos nos preguntara si queremos crear el archivo de la base de datos.
 
-## Laravel Sponsors
+```
+php artisan db:seed
+```
+Este comando introduce datos en las tablas, excepto en pedidos. También se pueden combinar:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+php artisan migrate --seed
 
-### Premium Partners
+```
+npm install
+```
+Para instalar las dependencias necesarias.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+npm run build
+```
 
-## Contributing
+Para compilar los recursos.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Con esto abremos creado lo necesario para utilizar la aplicación, si queremos arrancar el servidor que incluye laravel ejecutaremos el siguiente comando:
 
-## Code of Conduct
+```
+php artisan serve
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Esto generara un servidor web en local para poder acceder a la aplicación.
+La API estará disponible en http://localhost:8000.
 
-## Security Vulnerabilities
+### Configuración del entorno
+Edita el archivo .env para establecer correctamente los valores relacionados con Sanctum y el frontend (Angular):plo:
+```
+APP_URL=http://localhost:8000
+FRONTEND_URL=http://localhost:4200
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+SESSION_DOMAIN=localhost
+# SESSION_SECURE_COOKIE=false
+SANCTUM_STATEFUL_DOMAINS=localhost:4200
+# SESSION_STORE=localhost
+```
+Notas adicionales:
 
-## License
+Si instalas el proyecto en un equipo nuevo y los paquetes no estuvieran definidos, puedes instalar Sanctum y Breeze con los siguientes comandos:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+composer require laravel/sanctum
+
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+
+composer require laravel/breeze --dev
+
+php artisan breeze:install
+
+##### API RESTful
+
+Esta API sigue los principios RESTful y devuelve los datos en formato JSON. Permite realizar operaciones CRUD sobre recursos como:
+
+Plantas (/api/plants)
+Familias de plantas (/api/plant-families)
+Pedidos (/api/orders)
+Usuarios (/api/users)
+
+Ejemplo de respuesta JSON:
+
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Aloe Vera",
+      "description": "Planta medicinal.",
+      "price": 9.99,
+      "stock": 20,
+      "image_url": null,
+      "created_at": "2025-02-03T12:53:23.000000Z",
+      "updated_at": "2025-02-03T12:53:23.000000Z"
+    }
+  ]
+}
+
+Validaciones y gestión de errores
+
+Laravel se encarga de validar los datos en el backend mediante clases FormRequest personalizadas. Si se envían datos inválidos desde Angular, Laravel responde con un error 422 y un JSON detallando los errores:
+
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "name": ["El campo nombre es obligatorio."],
+    "price": ["El precio debe ser un número."]
+  }
+}
+
+En el frontend, estos errores se capturan desde Angular en el bloque error del subscribe() y se muestran debajo de cada campo correspondiente, lo que mejora la experiencia de usuario.
+
+##### Seeders
+
+Para cargar datos iniciales de ejemplo (plantas, pedidos, etc.), puedes ejecutar:
+
+php artisan db:seed
+
+Puedes consultar o modificar los seeders en el directorio database/seeders.
+
+##### Colaboradores del proyecto
+- Inacora Teresa Campos Alonso

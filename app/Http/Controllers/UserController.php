@@ -18,7 +18,7 @@ class UserController extends Controller
             return response()->json(['error' => 'No autorizado.'], 403);
         }
 
-        $users = User::paginate(6);
+        $users = User::paginate(8);
         return response()->json($users);
     }
 
@@ -26,7 +26,8 @@ public function update(UpdateUserRequest $request, $id)
 {
     $user = User::findOrFail($id);
 
-    if (Auth::id() !== $user->id) {
+    // Permitir si es el mismo usuario o si es admin
+    if (Auth::id() !== $user->id && Auth::user()->role !== 'admin') {
         return response()->json(['error' => 'No autorizado.'], 403);
     }
 
@@ -55,21 +56,43 @@ public function update(UpdateUserRequest $request, $id)
     ]);
 }
 
-    public function destroy($id)
-    {
-        $user = User::findOrFail($id);
+public function destroy($id)
+{
+    $user = User::findOrFail($id);
 
-        // Validar que el usuario autenticado sea el mismo que quiere eliminar
-        if (Auth::id() !== $user->id) {
+    // Permitir si es el mismo usuario o si es admin
+    if (Auth::id() !== $user->id && Auth::user()->role !== 'admin') {
+        return response()->json(['error' => 'No autorizado.'], 403);
+    }
+
+    $user->delete();
+
+    return response()->json([
+        'message' => 'User deleted successfully.',
+    ]);
+}
+
+public function store(StoreUserRequest $request)
+    {
+        // Solo los administradores pueden crear nuevos usuarios
+        if (Auth::user()->role !== 'admin') {
             return response()->json(['error' => 'No autorizado.'], 403);
         }
 
-        $user->delete();
+        $validated = $request->validated();
+
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role' => $validated['role'] ?? 'user', // Por defecto, el rol es 'user'
+        ]);
 
         return response()->json([
-            'message' => 'User deleted successfully.',
+            'message' => 'User created successfully.',
+            'user' => $user,
         ]);
-    }
+    }   
 
      public function search(Request $request)
 {
@@ -78,7 +101,7 @@ public function update(UpdateUserRequest $request, $id)
 
 
 
-    $users = User::where('name', 'like', "%{$query}%")->paginate(6);
+    $users = User::where('name', 'like', "%{$query}%")->paginate(8);
 
     return response()->json($users);
 }
